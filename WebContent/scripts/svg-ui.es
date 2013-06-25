@@ -48,7 +48,15 @@
 					}
 	
 					var space = event.target;
-					space.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#" + mark + "Marker");
+					space = space.correspondingElement != undefined ? space.correspondingElement : space;
+					if (space.correspondingElement != undefined)
+					{
+						space.correspondingElement.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#" + mark + "Marker");
+					}
+					else
+					{
+						space.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#" + mark + "Marker");
+					}
 					for (var i = 0; i < this.clickHandlers.length; i++)
 					{
 						this.clickHandlers[i]();
