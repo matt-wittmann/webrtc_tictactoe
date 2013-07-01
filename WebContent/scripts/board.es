@@ -8,6 +8,7 @@
 		X: 1,
 		O: 2,
 	};
+	Cell.ANY = [Cell.FREE, Cell.X, Cell.O];
 
 	/*********
 	 * 0 1 2 *
@@ -16,47 +17,84 @@
 	 *********/
 	function Board(cells, turn)
 	{
-		if (turn == undefined)
+		function decode(board, integer)
 		{
-			this.turn = Cell.X;
-		}
-		else if (player != Cell.X && player != Cell.O)
-		{
-			throw Error("player is either 'X' or 'O'.");
-		}
-		else
-		{
-			this.turn = turn;
-		}
-
-		if (cells == undefined)
-		{
-			this.cells = new Array(9);
-			this.turn = Cell.X;
-
-			for (var i = 0; i < this.cells.length; i++)
+			if (integer > 524287 || integer < 0)
 			{
-				this.cells[i] = Cell.FREE;
+				throw Error(integer + " is out of bounds for decoding a tic tac toe board.");
+			}
+			else
+			{
+				board.turn = (integer >>> 18 == 1) ? Cell.X : Cell.O;
+				board.cells = [];
+				for (var i = 0; i < 9; i++)
+				{
+					var freeCell = Boolean((integer >>> (i + 9)) & 1);
+					var cell = Cell.FREE;
+					if (!freeCell)
+					{
+						cell = Boolean((integer >>> i) & 1) ? Cell.X : Cell.O;
+					}
+					board.cells.push(cell);
+				}
 			}
 		}
-		else
+
+		var turnDefined = (function defineCells(board, cells)
 		{
-			if (cells.length == 9)
+			var turnDefined = false;
+			if (cells == undefined)
 			{
-				if (cells.every(function(cell) {[Cell.FREE, Cell.X, Cell.O].some(function(comparison) { return comparison == cell; }); }))
+				board.cells = new Array(9);
+				board.turn = Cell.X;
+
+				for (var i = 0; i < board.cells.length; i++)
 				{
-					this.cells = cells;
-				}
-				else
-				{
-					throw Error("A Tic Tac Toe cell can be X, O, or free only.");
+					board.cells[i] = Cell.FREE;
 				}
 			}
 			else
 			{
-				throw Error("A Tic Tac Toe board has nine cells.");
+				if (typeof cells === "number")
+				{
+					decode(board, cells);
+					turnDefined = true;
+				}
+				else if (cells.length == 9)
+				{
+					if (cells.every(function(cell) {return Cell.ANY.some(function(comparison) { return comparison == cell; }); }))
+					{
+						board.cells = cells;
+					}
+					else
+					{
+						throw Error("A Tic Tac Toe cell can be X, O, or free only.");
+					}
+				}
+				else
+				{
+					throw Error("A Tic Tac Toe board has nine cells.");
+				}
 			}
-		}
+			return turnDefined;
+		})(this, cells);
+
+		if (!turnDefined)
+			(function defineTurn(board, turn)
+			{
+				if (turn == undefined)
+				{
+					board.turn = Cell.X;
+				}
+				else if (turn != Cell.X && turn != Cell.O)
+				{
+					throw Error("player is either 'X' or 'O'.");
+				}
+				else
+				{
+					board.turn = turn;
+				}
+			})(this, turn);
 	}
 
 	Board.prototype =
@@ -151,6 +189,16 @@
 		{
 			var board = this;
 			return this.winning.some(function(winnable) { return board.isWinning(winnable); });
+		},
+
+		encode: function()
+		{
+			return this.cells.reduce(function(previous, current, i, cells)
+			{
+				var freeCell = Number(current == Cell.FREE);
+				var xCell = Number(current == Cell.X);
+				return (previous | (xCell << i)) | (previous | (freeCell << (i + cells.length)));
+			}, (Number(this.turn == Cell.X) << (this.cells.length * 2)));
 		}
 	};
 
