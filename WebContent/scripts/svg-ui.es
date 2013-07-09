@@ -150,11 +150,50 @@
 		}
 	});
 
+	function showBoard()
+	{
+		var setup = document.getElementById("setup");
+		var theBoard = document.getElementById("theBoard");
+		setup.setAttribute("display", "none");
+		theBoard.setAttribute("display", "inline");
+		
+	}
+
 	exports.SvgPlayer = SvgPlayer;
 
 	document.addEventListener("DOMContentLoaded",
 	function()
 	{
-		new Game.Game(new SvgPlayer(Board.Cell.X), new Player.RandomPlayer(Board.Cell.O));
+		//new Game.Game(new SvgPlayer(Board.Cell.X), new Player.RandomPlayer(Board.Cell.O));
+		[
+		 {
+			 label: "Local",
+			 handler: function(event)
+			 {
+				 showBoard();
+				 new Game.Game(new SvgPlayer(Board.Cell.X), new SvgPlayer(Board.Cell.O));
+			 }
+		 },
+		 {
+			 label: "Computer",
+			 handler: function(event)
+			 {
+				 showBoard();
+				 new Game.Game(new SvgPlayer(Board.Cell.X), new Player.RandomPlayer(Board.Cell.O));
+			 }
+		 },
+		 {
+			 label: "Remote",
+			 handler: function(event)
+			 {
+				 window.alert("Not yet implemented.");
+			 }
+		 }
+		].forEach(function(handlerHash)
+		{
+			var id = "label_" + handlerHash.label;
+			var element = document.getElementById(id);
+			element.addEventListener("click", handlerHash.handler);
+		});
 	});
 })(typeof exports === "undefined" ? this.SvgUi = {} : exports, Board, Player, Game);

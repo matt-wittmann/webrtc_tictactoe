@@ -6,6 +6,7 @@
 	<script type="application/ecmascript" xlink:href="scripts/player.es"/>
 	<script type="application/ecmascript" xlink:href="scripts/game.es"/>
 	<script type="application/ecmascript" xlink:href="scripts/svg-ui.es"/>
+	<script type="application/ecmascript" xlink:href="scripts/webrtc.es"/>
 	<defs>
 		<circle id="OMarker" cx="1.5cm" cy="1.5cm" r="1cm" fill="none" stroke="#F00" stroke-width="1mm"/>
 		<symbol id="XMarker">
@@ -16,30 +17,38 @@
 		</symbol>
 		<rect id="BlankMarker" fill="#FFF" fill-opacity="0" stroke="none" x="0" y="0" width="3cm" height="3cm"/>
 	</defs>
-	<g id="board" stroke="#000" fill="#000">
-		<rect x="0" y="0" width="9cm" height="9cm" stroke="none" fill="#FFF"/>
-		<line x1="0" x2="9cm" y1="3cm" y2="3cm" stroke-width="0.25mm"/>
-		<line x1="0" x2="9cm" y1="6cm" y2="6cm" stroke-width="0.25mm"/>
-		<line x1="3cm" x2="3cm" y1="0" y2="9cm" stroke-width="0.25mm"/>
-		<line x1="6cm" x2="6cm" y1="0" y2="9cm" stroke-width="0.25mm"/>
+	<g id="setup" stroke="#000" fill="#000" display="inline">
+	  <text id="label_Foe" font-size="0.75cm" text-anchor="middle" x="50%" y="0.8cm" font-family="Courier New, Courier, monospace">Foe</text>
+	  <text id="label_Local" font-size="0.5cm" text-anchor="middle" x="50%" y="2.23cm" font-family="Courier New, Courier, monospace">Local</text>
+	  <text id="label_Computer" font-size="0.5cm" text-anchor="middle" x="50%" y="4.39cm" font-family="Courier New, Courier, monospace">Computer</text>
+	  <text id="label_Remote" font-size="0.5cm" text-anchor="middle" x="50%" y="6.54cm" font-family="Courier New, Courier, monospace">Remote (WebRTC)</text>
 	</g>
-	<use id="Space0by0" x="0" y="0" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
-	<use id="Space1by0" x="3cm" y="0" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
-	<use id="Space2by0" x="6cm" y="0" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
-	<use id="Space0by1" x="0" y="3cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
-	<use id="Space1by1" x="3cm" y="3cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
-	<use id="Space2by1" x="6cm" y="3cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
-	<use id="Space0by2" x="0" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
-	<use id="Space1by2" x="3cm" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
-	<use id="Space2by2" x="6cm" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
-	<g id="winningMarks" stroke="none" fill="none">
-		<line id="winningMark012" x1="0" y1="1.5cm" x2="9cm" y2="1.5cm" stroke-width="3mm" stroke-opacity="0"/>
-		<line id="winningMark345" x1="0" y1="4.5cm" x2="9cm" y2="4.5cm" stroke-width="3mm" stroke-opacity="0"/>
-		<line id="winningMark678" x1="0" y1="7.5cm" x2="9cm" y2="7.5cm" stroke-width="3mm" stroke-opacity="0"/>
-		<line id="winningMark036" x1="1.5cm" y1="0" x2="1.5cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
-		<line id="winningMark147" x1="4.5cm" y1="0" x2="4.5cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
-		<line id="winningMark258" x1="7.5cm" y1="0" x2="7.5cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
-		<line id="winningMark048" x1="0" y1="0" x2="9cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
-		<line id="winningMark246" x1="0" y1="9cm" x2="9cm" y2="0" stroke-width="3mm" stroke-opacity="0"/>
+	<g id="theBoard" display="none">
+		<g id="board" stroke="#000" fill="#000">
+			<rect x="0" y="0" width="9cm" height="9cm" stroke="none" fill="#FFF"/>
+			<line x1="0" x2="9cm" y1="3cm" y2="3cm" stroke-width="0.25mm"/>
+			<line x1="0" x2="9cm" y1="6cm" y2="6cm" stroke-width="0.25mm"/>
+			<line x1="3cm" x2="3cm" y1="0" y2="9cm" stroke-width="0.25mm"/>
+			<line x1="6cm" x2="6cm" y1="0" y2="9cm" stroke-width="0.25mm"/>
+		</g>
+		<use id="Space0by0" x="0" y="0" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
+		<use id="Space1by0" x="3cm" y="0" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
+		<use id="Space2by0" x="6cm" y="0" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
+		<use id="Space0by1" x="0" y="3cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
+		<use id="Space1by1" x="3cm" y="3cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
+		<use id="Space2by1" x="6cm" y="3cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
+		<use id="Space0by2" x="0" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
+		<use id="Space1by2" x="3cm" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
+		<use id="Space2by2" x="6cm" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
+		<g id="winningMarks" stroke="none" fill="none">
+			<line id="winningMark012" x1="0" y1="1.5cm" x2="9cm" y2="1.5cm" stroke-width="3mm" stroke-opacity="0"/>
+			<line id="winningMark345" x1="0" y1="4.5cm" x2="9cm" y2="4.5cm" stroke-width="3mm" stroke-opacity="0"/>
+			<line id="winningMark678" x1="0" y1="7.5cm" x2="9cm" y2="7.5cm" stroke-width="3mm" stroke-opacity="0"/>
+			<line id="winningMark036" x1="1.5cm" y1="0" x2="1.5cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
+			<line id="winningMark147" x1="4.5cm" y1="0" x2="4.5cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
+			<line id="winningMark258" x1="7.5cm" y1="0" x2="7.5cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
+			<line id="winningMark048" x1="0" y1="0" x2="9cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
+			<line id="winningMark246" x1="0" y1="9cm" x2="9cm" y2="0" stroke-width="3mm" stroke-opacity="0"/>
+		</g>
 	</g>
 </svg>
