@@ -18,10 +18,15 @@
 		<rect id="BlankMarker" fill="#FFF" fill-opacity="0" stroke="none" x="0" y="0" width="3cm" height="3cm"/>
 	</defs>
 	<g id="setup" stroke="#000" fill="#000" display="inline">
-	  <text id="label_Foe" font-size="0.75cm" text-anchor="middle" x="50%" y="0.8cm" font-family="Courier New, Courier, monospace">Foe</text>
-	  <text id="label_Local" font-size="0.5cm" text-anchor="middle" x="50%" y="2.23cm" font-family="Courier New, Courier, monospace">Local</text>
-	  <text id="label_Computer" font-size="0.5cm" text-anchor="middle" x="50%" y="4.39cm" font-family="Courier New, Courier, monospace">Computer</text>
-	  <text id="label_Remote" font-size="0.5cm" text-anchor="middle" x="50%" y="6.54cm" font-family="Courier New, Courier, monospace">Remote (WebRTC)</text>
+		<text id="label_Foe" font-size="0.75cm" text-anchor="middle" x="50%" y="0.8cm" font-family="Courier New, Courier, monospace">Foe</text>
+		<text id="label_Local" font-size="0.5cm" text-anchor="middle" x="50%" y="2.23cm" font-family="Courier New, Courier, monospace">Local</text>
+		<text id="label_Computer" font-size="0.5cm" text-anchor="middle" x="50%" y="4.39cm" font-family="Courier New, Courier, monospace">Computer</text>
+		<text id="label_Remote" font-size="0.5cm" text-anchor="middle" x="50%" y="6.54cm" font-family="Courier New, Courier, monospace">Remote (WebRTC)</text>
+	</g>
+	<g id="webrtc" stroke="#000" fill="#000" display="none">
+		<text id="label_Webrtc" font-size="0.75cm" text-anchor="middle" x="50%" y="0.8cm" font-family="Courier New, Courier, monospace">WebRTC Peer</text>
+		<text id="label_Offer" font-size="0.5cm" text-anchor="middle" x="50%" y="4.55cm" font-family="Courier New, Courier, monospace">Make Offer</text>
+		<text id="label_Answer" font-size="0.5cm" text-anchor="middle" x="50%" y="8.3cm" font-family="Courier New, Courier, monospace">Answer Offer</text>
 	</g>
 	<g id="theBoard" display="none">
 		<g id="board" stroke="#000" fill="#000">

@@ -186,6 +186,23 @@
 			 label: "Remote",
 			 handler: function(event)
 			 {
+				 var setup = document.getElementById("setup");
+				 var webrtc = document.getElementById("webrtc");
+				 setup.setAttribute("display", "none");
+				 webrtc.setAttribute("display", "inline");
+			 }
+		 },
+		 {
+			 label: "Offer",
+			 handler: function(event)
+			 {
+				 window.alert("Not yet implemented.");
+			 }
+		 },
+		 {
+			 label: "Answer",
+			 handler: function(event)
+			 {
 				 window.alert("Not yet implemented.");
 			 }
 		 }
