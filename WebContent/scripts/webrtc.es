@@ -2,39 +2,39 @@
 {
 	"use strict";
 
-	if (!window.RTCPeerConnection)
+	if (!window.RTCPeerConnection || !window.RTCPeerConnection.apply)
 	{
-		if (mozRTCPeerConnection)
+		if (window.mozRTCPeerConnection)
 		{
-			window.RTCPeerConnection = mozRTCPeerConnection;
+			window.RTCPeerConnection = window.mozRTCPeerConnection;
 		}
-		else if (webkitRTCPeerConnection)
+		else if (window.webkitRTCPeerConnection)
 		{
-			window.RTCPeerConnection = webkitRTCPeerConnection;
+			window.RTCPeerConnection = window.webkitRTCPeerConnection;
 		}
 	}
 
-	if (!window.RTCSessionDescription)
+	if (!window.RTCSessionDescription || !window.RTCSessionDescription.apply)
 	{
-		if (mozRTCSessionDescription)
+		if (window.mozRTCSessionDescription)
 		{
-			window.RTCSessionDescription = mozRTCSessionDescription;
+			window.RTCSessionDescription = window.mozRTCSessionDescription;
 		}
 		else if (webkitRTCSessionDescription)
 		{
-			window.RTCSessionDescription = webkitRTCSessionDescription;
+			window.RTCSessionDescription = window.webkitRTCSessionDescription;
 		}
 	}
 
-	if (!window.RTCIceCandidate)
+	if (!window.RTCIceCandidate || !window.RTCIceCandidate.apply)
 	{
-		if (mozRTCIceCandidate)
+		if (window.mozRTCIceCandidate)
 		{
-			window.RTCIceCandidate = mozRTCIceCandidate;
+			window.RTCIceCandidate = window.mozRTCIceCandidate;
 		}
-		else if (webkitRTCSessionDescription)
+		else if (window.webkitRTCSessionDescription)
 		{
-			window.RTCIceCandidate = webkitRTCIceCandidate;
+			window.RTCIceCandidate = window.webkitRTCIceCandidate;
 		}
 	}
 

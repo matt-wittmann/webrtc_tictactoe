@@ -156,7 +156,105 @@
 		var theBoard = document.getElementById("theBoard");
 		setup.setAttribute("display", "none");
 		theBoard.setAttribute("display", "inline");
-		
+	}
+
+	function showOfferOrAnswer()
+	{
+		 var webrtc = document.getElementById("webrtc");
+		 var offerOrAnswer = document.getElementById("offerOrAnswer");
+		 webrtc.setAttribute("display", "none");
+		 offerOrAnswer.setAttribute("display", "inline");
+	}
+
+	function logWebRtcError(error)
+	{
+		console.error(error.name + ": " + error.message);
+	}
+
+	function setUpDataChannel(channel)
+	{
+		channel.onopen = function() {console.log("Data channel opened."); channel.send("Test.");};
+		channel.onclose = function() {console.log("Data channel closed.");};
+		channel.onerror = function(event) {console.error("Data channel error: " + event);};
+		channel.onmessage = function(event) {console.log(event.data);};
+		return channel;
+	}
+
+	function initializeWebRtc(offerer)
+	{
+		function setLocalDescription(description)
+		{
+			peerConnection.setLocalDescription(description, function()
+			{
+				console.log("Local description set.");
+				var nodeId = offerer ? "offer" : "answer";
+				var stringDescription = JSON.stringify(description);
+				var offerNode = document.createTextNode(stringDescription);
+				document.getElementById(nodeId).appendChild(offerNode);
+				window.prompt("Copy your " + nodeId + " and send it to a friend to play against.", stringDescription);
+				if (offerer)
+				{
+					var remoteAnswer = window.prompt("Paste in the answer to your offer.");
+					peerConnection.setRemoteDescription(new RTCSessionDescription(JSON.parse(remoteAnswer)), function()
+					{
+						var answerNode = document.createTextNode(remoteAnswer);
+						document.getElementById("answer").appendChild(answerNode);
+					}, logWebRtcError);
+				}
+			}, logWebRtcError);
+		}
+
+		var configuration = {"iceServers": [{"url": "stun:stunserver.org"}]};
+//		var peerConnection = new RTCPeerConnection(configuration);
+		var peerConnection = new RTCPeerConnection();
+		var channel = null;
+		var iceCandidate = null;
+		peerConnection.onclosedconnection = function() {console.log("RTCPeerConnection has closed.");};
+		peerConnection.onicecandidate = function(event)
+		{
+			iceCandidate = event.candidate;
+			if (!offerer && iceCandidate != null)
+			{
+				peerConnection.addIceCandidate(iceCandidate);
+			}
+		};
+		peerConnection.onaddstream = function(event)
+		{
+			console.log("Incoming media stream detected.");
+		};
+		peerConnection.onconnection = function(event)
+		{
+			console.log("Connection opened.");
+		};
+		peerConnection.ondatachannel = function(event)
+		{
+			console.log("Data channel connection received.");
+			channel = setUpDataChannel(event.channel);
+		};
+		peerConnection.onnegotiationneeded = function()
+		{
+			peerConnection.createOffer(setLocalDescription, logWebRtcError);
+		};
+
+		navigator.getUserMedia({audio: true, video: false, fake: true}, function(stream)
+		{
+			if (offerer)
+			{
+				peerConnection.addStream(stream);
+				channel = setUpDataChannel(peerConnection.createDataChannel("data", {reliable: true}));
+				peerConnection.createOffer(setLocalDescription, logWebRtcError);
+			}
+			else
+			{
+				var remoteOffer = window.prompt("Paste in the offer.");
+				var offerNode = document.createTextNode(remoteOffer);
+				document.getElementById("offer").appendChild(offerNode);
+				peerConnection.setRemoteDescription(new RTCSessionDescription(JSON.parse(remoteOffer)), function()
+				{
+					peerConnection.createAnswer(setLocalDescription, logWebRtcError);
+				}, logWebRtcError);
+			}
+		}, logWebRtcError);
 	}
 
 	exports.SvgPlayer = SvgPlayer;
@@ -164,7 +262,6 @@
 	document.addEventListener("DOMContentLoaded",
 	function()
 	{
-		//new Game.Game(new SvgPlayer(Board.Cell.X), new Player.RandomPlayer(Board.Cell.O));
 		[
 		 {
 			 label: "Local",
@@ -196,14 +293,16 @@
 			 label: "Offer",
 			 handler: function(event)
 			 {
-				 window.alert("Not yet implemented.");
+				 showOfferOrAnswer();
+				 initializeWebRtc(true);
 			 }
 		 },
 		 {
 			 label: "Answer",
 			 handler: function(event)
 			 {
-				 window.alert("Not yet implemented.");
+				 showOfferOrAnswer();
+				 initializeWebRtc(false);
 			 }
 		 }
 		].forEach(function(handlerHash)

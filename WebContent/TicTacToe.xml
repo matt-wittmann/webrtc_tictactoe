@@ -2,11 +2,12 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
 	"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="9cm" height="9cm">
+	<desc>WebRTC Tic Tac Toe</desc>
 	<script type="application/ecmascript" xlink:href="scripts/board.es"/>
 	<script type="application/ecmascript" xlink:href="scripts/player.es"/>
 	<script type="application/ecmascript" xlink:href="scripts/game.es"/>
-	<script type="application/ecmascript" xlink:href="scripts/svg-ui.es"/>
 	<script type="application/ecmascript" xlink:href="scripts/webrtc.es"/>
+	<script type="application/ecmascript" xlink:href="scripts/svg-ui.es"/>
 	<defs>
 		<circle id="OMarker" cx="1.5cm" cy="1.5cm" r="1cm" fill="none" stroke="#F00" stroke-width="1mm"/>
 		<symbol id="XMarker">
@@ -27,6 +28,12 @@
 		<text id="label_Webrtc" font-size="0.75cm" text-anchor="middle" x="50%" y="0.8cm" font-family="Courier New, Courier, monospace">WebRTC Peer</text>
 		<text id="label_Offer" font-size="0.5cm" text-anchor="middle" x="50%" y="4.55cm" font-family="Courier New, Courier, monospace">Make Offer</text>
 		<text id="label_Answer" font-size="0.5cm" text-anchor="middle" x="50%" y="8.3cm" font-family="Courier New, Courier, monospace">Answer Offer</text>
+	</g>
+	<g id="offerOrAnswer" stroke="#000" fill="#000" display="none">
+		<text id="label_theOffer" font-size="0.5cm" x="0.5cm" y="0.6cm" font-family="Courier New, Courier, monospace">Offer:</text>
+		<text id="offer" font-size="0.2cm" x="2.5cm" y="0.6cm" font-family="Courier New, Courier, monospace"/>
+		<text id="label_theAnswer" font-size="0.5cm" x="0.5cm" y="4.5cm" font-family="Courier New, Courier, monospace">Answer:</text>
+		<text id="answer" font-size="0.2cm" x="2.5cm" y="4.5cm" font-family="Courier New, Courier, monospace"/>
 	</g>
 	<g id="theBoard" display="none">
 		<g id="board" stroke="#000" fill="#000">
