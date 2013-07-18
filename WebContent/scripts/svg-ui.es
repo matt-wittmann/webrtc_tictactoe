@@ -168,7 +168,8 @@
 
 	function logWebRtcError(error)
 	{
-		console.error(error.name + ": " + error.message);
+		console.error(error);
+//		console.error(error.name + ": " + error.message);
 	}
 
 	function setUpDataChannel(channel)
@@ -205,8 +206,7 @@
 		}
 
 		var configuration = {"iceServers": [{"url": "stun:stunserver.org"}]};
-//		var peerConnection = new RTCPeerConnection(configuration);
-		var peerConnection = new RTCPeerConnection();
+		var peerConnection = new RTCPeerConnection(configuration);
 		var channel = null;
 		var iceCandidate = null;
 		peerConnection.onclosedconnection = function() {console.log("RTCPeerConnection has closed.");};

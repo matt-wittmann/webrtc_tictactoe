@@ -20,7 +20,7 @@
 		{
 			window.RTCSessionDescription = window.mozRTCSessionDescription;
 		}
-		else if (webkitRTCSessionDescription)
+		else if (window.webkitRTCSessionDescription)
 		{
 			window.RTCSessionDescription = window.webkitRTCSessionDescription;
 		}
