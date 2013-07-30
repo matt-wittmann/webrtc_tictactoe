@@ -7,6 +7,7 @@
 	<script type="application/ecmascript" xlink:href="scripts/player.es"/>
 	<script type="application/ecmascript" xlink:href="scripts/game.es"/>
 	<script type="application/ecmascript" xlink:href="scripts/webrtc.es"/>
+	<script type="application/ecmascript" xlink:href="scripts/remote-player.es"/>
 	<script type="application/ecmascript" xlink:href="scripts/svg-ui.es"/>
 	<defs>
 		<circle id="OMarker" cx="1.5cm" cy="1.5cm" r="1cm" fill="none" stroke="#F00" stroke-width="1mm"/>

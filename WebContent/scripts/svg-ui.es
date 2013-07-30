@@ -1,4 +1,4 @@
-(function(exports, Board, Player, Game)
+(function(exports, Board, Player, RemotePlayer, Game)
 {
 	"use strict";
 
@@ -71,7 +71,8 @@
 			}
 		},
 
-		makeSpaceClickedHandler: {
+		makeSpaceClickedHandler:
+		{
 			value: function(board, x, y, callback)
 			{
 				var player = this;
@@ -169,12 +170,19 @@
 	function logWebRtcError(error)
 	{
 		console.error(error);
-//		console.error(error.name + ": " + error.message);
 	}
 
-	function setUpDataChannel(channel)
+	function setUpDataChannel(channel, offerer)
 	{
-		channel.onopen = function() {console.log("Data channel opened."); channel.send("Test.");};
+		channel.onopen = function()
+		{
+			console.log("Data channel opened.");
+			//channel.send("Test.");
+			showBoard();
+			var playerX = offerer ? new SvgPlayer(Board.Cell.X) : new RemotePlayer.RemotePlayer(Board.Cell.X, channel);
+			var playerY = offerer ? new RemotePlayer.RemotePlayer(Board.Cell.O, channel) : new SvgPlayer(Board.Cell.O);
+			new Game.Game(playerX, playerY);
+		};
 		channel.onclose = function() {console.log("Data channel closed.");};
 		channel.onerror = function(event) {console.error("Data channel error: " + event);};
 		channel.onmessage = function(event) {console.log(event.data);};
@@ -229,7 +237,7 @@
 		peerConnection.ondatachannel = function(event)
 		{
 			console.log("Data channel connection received.");
-			channel = setUpDataChannel(event.channel);
+			channel = setUpDataChannel(event.channel, offerer);
 		};
 		peerConnection.onnegotiationneeded = function()
 		{
@@ -241,7 +249,7 @@
 			if (offerer)
 			{
 				peerConnection.addStream(stream);
-				channel = setUpDataChannel(peerConnection.createDataChannel("data", {reliable: true}));
+				channel = setUpDataChannel(peerConnection.createDataChannel("data", {reliable: true}), offerer);
 				peerConnection.createOffer(setLocalDescription, logWebRtcError);
 			}
 			else
@@ -312,4 +320,4 @@
 			element.addEventListener("click", handlerHash.handler);
 		});
 	});
-})(typeof exports === "undefined" ? this.SvgUi = {} : exports, Board, Player, Game);
+})(typeof exports === "undefined" ? this.SvgUi = {} : exports, Board, Player, RemotePlayer, Game);

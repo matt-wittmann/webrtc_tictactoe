@@ -41,17 +41,12 @@
 				other.draw(board);
 				over = true;
 			}
-			else
-			{
-				var temp = player;
-				player = other;
-				other = temp;
-			}
 
-			if (!over)
-			{
-				player.ask(board, function() { ask(board, player, other); });
-			}
+			var temp = player;
+			player = other;
+			other = temp;
+
+			player.ask(board, !over ? function() { ask(board, player, other); } : function(){});
 		}
 
 		ask(this.board, this.o, this.x);

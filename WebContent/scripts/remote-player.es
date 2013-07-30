@@ -2,45 +2,39 @@
 {
 	"use strict";
 
-	function RemotePlayer(xo, peerConnection, dataChannel)
+	function RemotePlayer(xo, dataChannel)
 	{
 		Player.Player.call(xo);
 		this.xo = xo;
-		this.peerConnection = peerConnection;
 		this.dataChannel = dataChannel;
-//		this.dataChannel = peerConnection.createDataChannel("webrtc-tictactoe"); // TODO Sender
-//		peerConnection.ondatachannel = function(event)
-//		{
-////			this.dataChannel = event.target;
-//			this.dataChannel = event.channel;
-//			// TODO Receiver
-//		};
 	}
 
 	RemotePlayer.prototype = Object.create(Player.Player.prototype,
 	{
 		convert:
 		{
-			value: function(board, data)
+			value: function(board, data, callback)
 			{
-				var newCells = null;
-				if (typeof data === "string")
+				var reader = new FileReader();
+				var player = this;
+				reader.onload = function()
 				{
-//					var newCells = data.map(function(c) {Number(c)});
-					if (data.length == 10)
+					var typedArray = new Uint32Array(this.result);
+					if (typedArray.length == 1)
 					{
-						if (Number(data[0]) != board.other(this.xo))
+						var newBoard = new Board.Board(typedArray[0]);
+						if (newBoard.turn != board.other(player.xo))
 						{
 							throw Error("The other play still thinks it's their turn! CHEATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 						}
-						newCells = [];
-						for (var i = 1; i < data.length; i++)
-						{
-							newCells.push(Number(data[i]));
-						}
+						callback(newBoard.cells);
 					}
-				}
-				return newCells;
+					else
+					{
+						throw Error("Unexpected data buffer size sent from remote player: " + typedArray.length);
+					}
+				};
+				reader.readAsArrayBuffer(data);
 			}
 		},
 		ask:
@@ -48,10 +42,11 @@
 			value: function(board, callback)
 			{
 				this.turn = Player.Turn.OWN;
+				this.dataChannel.send(new Blob([new Uint32Array([board.encode()]).buffer]));
+				var player = this;
 				this.dataChannel.onmessage = function(event)
 				{
-					var newCells = this.convert(board, event.data);
-					if (newCells != null)
+					player.convert(board, event.data, function(newCells)
 					{
 						var diffs = [];
 						for (var i = 0; i < newCells.length; i++)
@@ -74,12 +69,15 @@
 						}
 						else
 						{
-							board.mark(this.xo, diffs[0][0]);
+							board.mark(player.xo, diffs[0][0]);
+							player.turn = Player.Turn.OTHER;
+							callback();
 						}
-					}
+					});
 				};
-				this.turn = Player.Turn.OTHER;
 			}
 		}
 	});
+
+	exports.RemotePlayer = RemotePlayer;
 })(typeof exports === "undefined" ? this.RemotePlayer = {} : exports, Board, Player, Game);
