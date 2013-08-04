@@ -62,6 +62,7 @@
 						this.clickHandlers[i]();
 					}
 					this.turn = Player.Turn.OTHER;
+					redrawBoard(board);
 					callback();
 				}
 				else
