@@ -144,7 +144,7 @@
 		{
 			value: function(board)
 			{
-				this.redrawBoard(board);
+				redrawBoard(board);
 				Player.Player.prototype.draw.apply(this, board);
 				document.getElementById("OMarker").setAttribute("stroke", "#C0C0C0");
 				document.getElementById("XMarkerLines").setAttribute("stroke", "#C0C0C0");
