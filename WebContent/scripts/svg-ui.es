@@ -170,7 +170,7 @@
 
 	function logWebRtcError(error)
 	{
-		console.error(error);
+		console.error(error.name + ": " + error.message);
 	}
 
 	function setUpDataChannel(channel, offerer)
