@@ -175,16 +175,23 @@
 
 	function setUpDataChannel(channel, offerer)
 	{
+		var interval = {id: null};
 		channel.onopen = function()
 		{
 			console.log("Data channel opened.");
-			//channel.send("Test.");
+			interval.id = window.setInterval(function()
+			{
+				if (channel != null && channel.readyState == "open")
+				{
+					channel.send(new Blob([new Uint32Array([RemotePlayer.HEARTBEAT]).buffer]));
+				}
+			}, 1000);
 			showBoard();
 			var playerX = offerer ? new SvgPlayer(Board.Cell.X) : new RemotePlayer.RemotePlayer(Board.Cell.X, channel);
 			var playerY = offerer ? new RemotePlayer.RemotePlayer(Board.Cell.O, channel) : new SvgPlayer(Board.Cell.O);
 			new Game.Game(playerX, playerY);
 		};
-		channel.onclose = function() {console.log("Data channel closed.");};
+		channel.onclose = function() {console.log("Data channel closed."); window.clearInterval(interval.id);};
 		channel.onerror = function(event) {console.error("Data channel error: " + event);};
 		channel.onmessage = function(event) {console.log(event.data);};
 		return channel;
@@ -215,7 +222,8 @@
 		}
 
 		var configuration = {"iceServers": [{"url": "stun:stunserver.org"}]};
-		var peerConnection = new RTCPeerConnection(configuration);
+		var mediaConstraints = {"optional": [{ "RtpDataChannels": true }]};
+		var peerConnection = new RTCPeerConnection(configuration, mediaConstraints);
 		var channel = null;
 		var iceCandidate = null;
 		peerConnection.onclosedconnection = function() {console.log("RTCPeerConnection has closed.");};

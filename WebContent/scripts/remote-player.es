@@ -2,6 +2,8 @@
 {
 	"use strict";
 
+	var HEARTBEAT = 524288;
+
 	function RemotePlayer(xo, dataChannel)
 	{
 		Player.Player.call(xo);
@@ -22,12 +24,16 @@
 					var typedArray = new Uint32Array(this.result);
 					if (typedArray.length == 1)
 					{
-						var newBoard = new Board.Board(typedArray[0]);
-						if (newBoard.turn != board.other(player.xo))
+						var encoded = typedArray[0];
+						if (encoded != HEARTBEAT)
 						{
-							throw Error("The other play still thinks it's their turn! CHEATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+							var newBoard = new Board.Board(encoded);
+							if (newBoard.turn != board.other(player.xo))
+							{
+								throw Error("The other play still thinks it's their turn! CHEATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+							}
+							callback(newBoard.cells);
 						}
-						callback(newBoard.cells);
 					}
 					else
 					{
@@ -80,4 +86,5 @@
 	});
 
 	exports.RemotePlayer = RemotePlayer;
+	exports.HEARTBEAT = HEARTBEAT;
 })(typeof exports === "undefined" ? this.RemotePlayer = {} : exports, Board, Player, Game);
