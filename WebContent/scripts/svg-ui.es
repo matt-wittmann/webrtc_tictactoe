@@ -222,7 +222,7 @@
 		}
 
 		var configuration = {"iceServers": [{"url": "stun:stunserver.org"}]};
-		var mediaConstraints = {"optional": [{ "RtpDataChannels": true }]};
+		var mediaConstraints = {"optional": [{ "RtpDataChannels": true}, {"DtlsSrtpKeyAgreement": true }]};
 		var peerConnection = new RTCPeerConnection(configuration, mediaConstraints);
 		var channel = null;
 		var iceCandidate = null;
