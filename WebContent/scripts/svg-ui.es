@@ -116,6 +116,7 @@
 				{
 					var suffix = winnable.reduce(function(previous, current) { return previous + current.toString(); }, "");
 					document.getElementById("winningMark" + suffix).setAttribute("stroke-opacity", "1");
+					document.getElementById("winningMark" + suffix).setAttribute("stroke-width", "3mm");
 				});
 			}
 		},

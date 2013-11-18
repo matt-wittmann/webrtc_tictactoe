@@ -53,15 +53,15 @@
 		<use id="Space0by2" x="0" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
 		<use id="Space1by2" x="3cm" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
 		<use id="Space2by2" x="6cm" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
-		<g id="winningMarks" stroke="#FFF" fill="#FFF">
-			<line id="winningMark012" x1="0" y1="1.5cm" x2="9cm" y2="1.5cm" stroke-width="3mm" stroke-opacity="0"/>
-			<line id="winningMark345" x1="0" y1="4.5cm" x2="9cm" y2="4.5cm" stroke-width="3mm" stroke-opacity="0"/>
-			<line id="winningMark678" x1="0" y1="7.5cm" x2="9cm" y2="7.5cm" stroke-width="3mm" stroke-opacity="0"/>
-			<line id="winningMark036" x1="1.5cm" y1="0" x2="1.5cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
-			<line id="winningMark147" x1="4.5cm" y1="0" x2="4.5cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
-			<line id="winningMark258" x1="7.5cm" y1="0" x2="7.5cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
-			<line id="winningMark048" x1="0" y1="0" x2="9cm" y2="9cm" stroke-width="3mm" stroke-opacity="0"/>
-			<line id="winningMark246" x1="0" y1="9cm" x2="9cm" y2="0" stroke-width="3mm" stroke-opacity="0"/>
+		<g id="winningMarks" stroke="#000" fill="#000">
+			<line id="winningMark012" x1="0" y1="1.5cm" x2="9cm" y2="1.5cm" stroke-width="0" stroke-opacity="0"/>
+			<line id="winningMark345" x1="0" y1="4.5cm" x2="9cm" y2="4.5cm" stroke-width="0" stroke-opacity="0"/>
+			<line id="winningMark678" x1="0" y1="7.5cm" x2="9cm" y2="7.5cm" stroke-width="0" stroke-opacity="0"/>
+			<line id="winningMark036" x1="1.5cm" y1="0" x2="1.5cm" y2="9cm" stroke-width="0" stroke-opacity="0"/>
+			<line id="winningMark147" x1="4.5cm" y1="0" x2="4.5cm" y2="9cm" stroke-width="0" stroke-opacity="0"/>
+			<line id="winningMark258" x1="7.5cm" y1="0" x2="7.5cm" y2="9cm" stroke-width="0" stroke-opacity="0"/>
+			<line id="winningMark048" x1="0" y1="0" x2="9cm" y2="9cm" stroke-width="0" stroke-opacity="0"/>
+			<line id="winningMark246" x1="0" y1="9cm" x2="9cm" y2="0" stroke-width="0" stroke-opacity="0"/>
 		</g>
 	</g>
 </svg>
