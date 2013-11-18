@@ -46,7 +46,10 @@
 			player = other;
 			other = temp;
 
-			player.ask(board, !over ? function() { ask(board, player, other); } : function(){});
+			if (!over)
+			{
+				player.ask(board, function() { ask(board, player, other); });
+			}
 		}
 
 		ask(this.board, this.o, this.x);

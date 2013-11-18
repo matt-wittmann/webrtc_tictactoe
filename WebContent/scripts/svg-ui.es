@@ -57,9 +57,9 @@
 					{
 						space.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#" + mark + "Marker");
 					}
-					for (var i = 0; i < this.clickHandlers.length; i++)
+					for (var i = 0, max = this.clickHandlers.length; i < max; i++)
 					{
-						this.clickHandlers[i]();
+						this.clickHandlers.pop()();
 					}
 					this.turn = Player.Turn.OTHER;
 					redrawBoard(board);
