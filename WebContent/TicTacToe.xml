@@ -53,7 +53,7 @@
 		<use id="Space0by2" x="0" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
 		<use id="Space1by2" x="3cm" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
 		<use id="Space2by2" x="6cm" y="6cm" width="3cm" height="3cm" xlink:href="#BlankMarker"/>
-		<g id="winningMarks" stroke="none" fill="none">
+		<g id="winningMarks" stroke="#FFF" fill="#FFF">
 			<line id="winningMark012" x1="0" y1="1.5cm" x2="9cm" y2="1.5cm" stroke-width="3mm" stroke-opacity="0"/>
 			<line id="winningMark345" x1="0" y1="4.5cm" x2="9cm" y2="4.5cm" stroke-width="3mm" stroke-opacity="0"/>
 			<line id="winningMark678" x1="0" y1="7.5cm" x2="9cm" y2="7.5cm" stroke-width="3mm" stroke-opacity="0"/>
